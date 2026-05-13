@@ -1,5 +1,20 @@
 # Changelog
 
+## [0.11.0](https://github.com/Gitlawb/openclaude/compare/v0.10.0...v0.11.0) (2026-05-13)
+
+
+### Features
+
+* implement high-performance SQLite storage layer with JSON audit log (Phase 2 Masterpiece) ([#1106](https://github.com/Gitlawb/openclaude/issues/1106)) ([e12432e](https://github.com/Gitlawb/openclaude/commit/e12432eaf68be2ded987f83b16f1d4ae994d4d2b))
+* **provider:** add Venice official provider ([#1109](https://github.com/Gitlawb/openclaude/issues/1109)) ([f9621ab](https://github.com/Gitlawb/openclaude/commit/f9621ab575762453bff5d224e1e6f44067d9b1f3))
+
+
+### Bug Fixes
+
+* **bashSecurity:** tighten fc -e detection to avoid long-flag false positives ([#1107](https://github.com/Gitlawb/openclaude/issues/1107)) ([0c88def](https://github.com/Gitlawb/openclaude/commit/0c88defbe0014f434b6ae5d419c8a6234463294e))
+* **codex:** normalize empty MCP object schemas ([#1121](https://github.com/Gitlawb/openclaude/issues/1121)) ([7ea74f2](https://github.com/Gitlawb/openclaude/commit/7ea74f29f0cf01654da37deef52d9350a34b6c89))
+* hide missing-module slash command stubs ([#1136](https://github.com/Gitlawb/openclaude/issues/1136)) ([cf33f03](https://github.com/Gitlawb/openclaude/commit/cf33f0375543afc26492426f55f8d81647288e79))
+
 ## [0.10.0](https://github.com/Gitlawb/openclaude/compare/v0.9.2...v0.10.0) (2026-05-11)
 
 
