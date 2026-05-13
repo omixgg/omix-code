@@ -36,8 +36,8 @@ afterEach(() => {
   mock.restore()
 })
 
-describe('OpenClaude paths', () => {
-  test('defaults user config home to ~/.openclaude', async () => {
+describe('OmixCode paths', () => {
+  test('defaults user config home to ~/.OmixCode', async () => {
     delete process.env.CLAUDE_CONFIG_DIR
     const { resolveClaudeConfigHomeDir } = await importFreshEnvUtils()
 
@@ -45,10 +45,10 @@ describe('OpenClaude paths', () => {
       resolveClaudeConfigHomeDir({
         homeDir: homedir(),
       }),
-    ).toBe(join(homedir(), '.openclaude'))
+    ).toBe(join(homedir(), '.OmixCode'))
   })
 
-  test('hard-cuts user config home to ~/.openclaude by default', async () => {
+  test('hard-cuts user config home to ~/.OmixCode by default', async () => {
     delete process.env.CLAUDE_CONFIG_DIR
     const { resolveClaudeConfigHomeDir } = await importFreshEnvUtils()
 
@@ -56,11 +56,11 @@ describe('OpenClaude paths', () => {
       resolveClaudeConfigHomeDir({
         homeDir: homedir(),
       }),
-    ).toBe(join(homedir(), '.openclaude'))
+    ).toBe(join(homedir(), '.OmixCode'))
   })
 
-  test('migrates legacy config home and global config files to .openclaude', async () => {
-    const tempHome = mkdtempSync(join(tmpdir(), 'openclaude-paths-test-'))
+  test('migrates legacy config home and global config files to .OmixCode', async () => {
+    const tempHome = mkdtempSync(join(tmpdir(), 'OmixCode-paths-test-'))
     try {
       mkdirSync(join(tempHome, '.claude', 'skills', 'legacy-skill'), {
         recursive: true,
@@ -81,33 +81,33 @@ describe('OpenClaude paths', () => {
       expect(migrateLegacyClaudeConfigHome({ homeDir: tempHome })).toBe(true)
       expect(
         readFileSync(
-          join(tempHome, '.openclaude', 'skills', 'legacy-skill', 'SKILL.md'),
+          join(tempHome, '.OmixCode', 'skills', 'legacy-skill', 'SKILL.md'),
           'utf8',
         ),
       ).toBe('legacy skill')
-      expect(existsSync(join(tempHome, '.openclaude', 'settings.json'))).toBe(
+      expect(existsSync(join(tempHome, '.OmixCode', 'settings.json'))).toBe(
         true,
       )
-      expect(readFileSync(join(tempHome, '.openclaude.json'), 'utf8')).toBe(
+      expect(readFileSync(join(tempHome, '.OmixCode.json'), 'utf8')).toBe(
         '{"legacy":true}',
       )
       expect(
-        readFileSync(join(tempHome, '.openclaude-custom-oauth.json'), 'utf8'),
+        readFileSync(join(tempHome, '.OmixCode-custom-oauth.json'), 'utf8'),
       ).toBe('{"custom":true}')
     } finally {
       rmSync(tempHome, { recursive: true, force: true })
     }
   })
 
-  test('migration preserves existing .openclaude data while copying missing legacy data', async () => {
-    const tempHome = mkdtempSync(join(tmpdir(), 'openclaude-paths-test-'))
+  test('migration preserves existing .OmixCode data while copying missing legacy data', async () => {
+    const tempHome = mkdtempSync(join(tmpdir(), 'OmixCode-paths-test-'))
     try {
       mkdirSync(join(tempHome, '.claude', 'skills', 'legacy-skill'), {
         recursive: true,
       })
-      mkdirSync(join(tempHome, '.openclaude', 'skills'), { recursive: true })
+      mkdirSync(join(tempHome, '.OmixCode', 'skills'), { recursive: true })
       writeFileSync(join(tempHome, '.claude', 'settings.json'), 'legacy')
-      writeFileSync(join(tempHome, '.openclaude', 'settings.json'), 'current')
+      writeFileSync(join(tempHome, '.OmixCode', 'settings.json'), 'current')
       writeFileSync(
         join(tempHome, '.claude', 'skills', 'legacy-skill', 'SKILL.md'),
         'legacy skill',
@@ -117,11 +117,11 @@ describe('OpenClaude paths', () => {
 
       expect(migrateLegacyClaudeConfigHome({ homeDir: tempHome })).toBe(true)
       expect(
-        readFileSync(join(tempHome, '.openclaude', 'settings.json'), 'utf8'),
+        readFileSync(join(tempHome, '.OmixCode', 'settings.json'), 'utf8'),
       ).toBe('current')
       expect(
         readFileSync(
-          join(tempHome, '.openclaude', 'skills', 'legacy-skill', 'SKILL.md'),
+          join(tempHome, '.OmixCode', 'skills', 'legacy-skill', 'SKILL.md'),
           'utf8',
         ),
       ).toBe('legacy skill')
@@ -131,7 +131,7 @@ describe('OpenClaude paths', () => {
   })
 
   test('migration skips explicit CLAUDE_CONFIG_DIR overrides', async () => {
-    const tempHome = mkdtempSync(join(tmpdir(), 'openclaude-paths-test-'))
+    const tempHome = mkdtempSync(join(tmpdir(), 'OmixCode-paths-test-'))
     try {
       mkdirSync(join(tempHome, '.claude'), { recursive: true })
       writeFileSync(join(tempHome, '.claude', 'settings.json'), 'legacy')
@@ -144,16 +144,16 @@ describe('OpenClaude paths', () => {
           homeDir: tempHome,
         }),
       ).toBe(true)
-      expect(existsSync(join(tempHome, '.openclaude'))).toBe(false)
+      expect(existsSync(join(tempHome, '.OmixCode'))).toBe(false)
     } finally {
       rmSync(tempHome, { recursive: true, force: true })
     }
   })
 
-  test('migration fails closed when .openclaude collides with a non-directory', async () => {
-    const tempHome = mkdtempSync(join(tmpdir(), 'openclaude-paths-test-'))
+  test('migration fails closed when .OmixCode collides with a non-directory', async () => {
+    const tempHome = mkdtempSync(join(tmpdir(), 'OmixCode-paths-test-'))
     try {
-      writeFileSync(join(tempHome, '.openclaude'), 'not a directory')
+      writeFileSync(join(tempHome, '.OmixCode'), 'not a directory')
       mkdirSync(join(tempHome, '.claude'), { recursive: true })
       writeFileSync(join(tempHome, '.claude', 'settings.json'), 'legacy')
 
@@ -166,23 +166,23 @@ describe('OpenClaude paths', () => {
   })
 
   test('migration ignores non-directory legacy config homes', async () => {
-    const tempHome = mkdtempSync(join(tmpdir(), 'openclaude-paths-test-'))
+    const tempHome = mkdtempSync(join(tmpdir(), 'OmixCode-paths-test-'))
     try {
       writeFileSync(join(tempHome, '.claude'), 'not a directory')
 
       const { migrateLegacyClaudeConfigHome } = await importFreshEnvUtils()
 
       expect(migrateLegacyClaudeConfigHome({ homeDir: tempHome })).toBe(true)
-      expect(existsSync(join(tempHome, '.openclaude'))).toBe(false)
+      expect(existsSync(join(tempHome, '.OmixCode'))).toBe(false)
     } finally {
       rmSync(tempHome, { recursive: true, force: true })
     }
   })
 
-  test('config home falls back to legacy when migration fails on a non-directory .openclaude collision', async () => {
-    const tempHome = mkdtempSync(join(tmpdir(), 'openclaude-paths-test-'))
+  test('config home falls back to legacy when migration fails on a non-directory .OmixCode collision', async () => {
+    const tempHome = mkdtempSync(join(tmpdir(), 'OmixCode-paths-test-'))
     try {
-      writeFileSync(join(tempHome, '.openclaude'), 'not a directory')
+      writeFileSync(join(tempHome, '.OmixCode'), 'not a directory')
       mkdirSync(join(tempHome, '.claude'), { recursive: true })
       mock.module('os', () => ({
         homedir: () => tempHome,
@@ -198,12 +198,12 @@ describe('OpenClaude paths', () => {
     }
   })
 
-  test('default plans directory uses ~/.openclaude/plans', async () => {
+  test('default plans directory uses ~/.OmixCode/plans', async () => {
     delete process.env.CLAUDE_CONFIG_DIR
     const { getDefaultPlansDirectory } = await importFreshPlans()
 
     expect(getDefaultPlansDirectory({ homeDir: homedir() })).toBe(
-      join(homedir(), '.openclaude', 'plans'),
+      join(homedir(), '.OmixCode', 'plans'),
     )
   })
 
@@ -211,8 +211,8 @@ describe('OpenClaude paths', () => {
     const { getDefaultPlansDirectory } = await importFreshPlans()
 
     expect(
-      getDefaultPlansDirectory({ configDirEnv: '/tmp/custom-openclaude' }),
-    ).toBe(join('/tmp/custom-openclaude', 'plans'))
+      getDefaultPlansDirectory({ configDirEnv: '/tmp/custom-OmixCode' }),
+    ).toBe(join('/tmp/custom-OmixCode', 'plans'))
   })
 
   test('default plans directory normalizes generated path to NFC', async () => {
@@ -220,59 +220,59 @@ describe('OpenClaude paths', () => {
 
     expect(
       getDefaultPlansDirectory({ homeDir: '/tmp/cafe\u0301' }),
-    ).toBe(join('/tmp/caf\u00e9', '.openclaude', 'plans'))
+    ).toBe(join('/tmp/caf\u00e9', '.OmixCode', 'plans'))
   })
 
   test('default plans directory normalizes explicit CLAUDE_CONFIG_DIR to NFC', async () => {
     const { getDefaultPlansDirectory } = await importFreshPlans()
 
     expect(
-      getDefaultPlansDirectory({ configDirEnv: '/tmp/cafe\u0301-openclaude' }),
-    ).toBe(join('/tmp/caf\u00e9-openclaude', 'plans'))
+      getDefaultPlansDirectory({ configDirEnv: '/tmp/cafe\u0301-OmixCode' }),
+    ).toBe(join('/tmp/caf\u00e9-OmixCode', 'plans'))
   })
 
   test('uses CLAUDE_CONFIG_DIR override when provided', async () => {
-    process.env.CLAUDE_CONFIG_DIR = '/tmp/custom-openclaude'
+    process.env.CLAUDE_CONFIG_DIR = '/tmp/custom-OmixCode'
     const { getClaudeConfigHomeDir, resolveClaudeConfigHomeDir } =
       await importFreshEnvUtils()
 
-    expect(getClaudeConfigHomeDir()).toBe('/tmp/custom-openclaude')
+    expect(getClaudeConfigHomeDir()).toBe('/tmp/custom-OmixCode')
     expect(
       resolveClaudeConfigHomeDir({
-        configDirEnv: '/tmp/custom-openclaude',
+        configDirEnv: '/tmp/custom-OmixCode',
       }),
-    ).toBe('/tmp/custom-openclaude')
+    ).toBe('/tmp/custom-OmixCode')
   })
 
-  test('project and local settings paths use .openclaude', async () => {
+  test('project and local settings paths use .OmixCode', async () => {
     const { getRelativeSettingsFilePathForSource } = await importFreshSettings()
 
     expect(getRelativeSettingsFilePathForSource('projectSettings')).toBe(
-      '.openclaude/settings.json',
+      '.OmixCode/settings.json',
     )
     expect(getRelativeSettingsFilePathForSource('localSettings')).toBe(
-      '.openclaude/settings.local.json',
+      '.OmixCode/settings.local.json',
     )
   })
 
-  test('local installer uses openclaude wrapper path', async () => {
-    // Force .openclaude config home so the test doesn't fall back to
-    // ~/.claude when ~/.openclaude doesn't exist on this machine.
-    process.env.CLAUDE_CONFIG_DIR = join(homedir(), '.openclaude')
+  test('local installer uses OmixCode wrapper path', async () => {
+    // Force .OmixCode config home so the test doesn't fall back to
+    // ~/.claude when ~/.OmixCode doesn't exist on this machine.
+    process.env.CLAUDE_CONFIG_DIR = join(homedir(), '.OmixCode')
     const { getLocalClaudePath } = await importFreshLocalInstaller()
 
     expect(getLocalClaudePath()).toBe(
-      join(homedir(), '.openclaude', 'local', 'openclaude'),
+      join(homedir(), '.OmixCode', 'local', 'OmixCode'),
     )
   })
 
-  test('local installation detection matches .openclaude path', async () => {
+  test('local installation detection matches .OmixCode path', async () => {
     const { isManagedLocalInstallationPath } =
       await importFreshLocalInstaller()
 
     expect(
       isManagedLocalInstallationPath(
-        `${join(homedir(), '.openclaude', 'local')}/node_modules/.bin/openclaude`,
+        `${join(homedir(), '.OmixCode', 'local')}/node_modules/.bin/OmixCode`,
       ),
     ).toBe(true)
   })
@@ -283,21 +283,21 @@ describe('OpenClaude paths', () => {
 
     expect(
       isManagedLocalInstallationPath(
-        `${join(homedir(), '.claude', 'local')}/node_modules/.bin/openclaude`,
+        `${join(homedir(), '.claude', 'local')}/node_modules/.bin/OmixCode`,
       ),
     ).toBe(true)
   })
 
-  test('candidate local install dirs include both openclaude and legacy claude paths', async () => {
+  test('candidate local install dirs include both OmixCode and legacy claude paths', async () => {
     const { getCandidateLocalInstallDirs } = await importFreshLocalInstaller()
 
     expect(
       getCandidateLocalInstallDirs({
-        configHomeDir: join(homedir(), '.openclaude'),
+        configHomeDir: join(homedir(), '.OmixCode'),
         homeDir: homedir(),
       }),
     ).toEqual([
-      join(homedir(), '.openclaude', 'local'),
+      join(homedir(), '.OmixCode', 'local'),
       join(homedir(), '.claude', 'local'),
     ])
   })

@@ -20,49 +20,49 @@ afterEach(() => {
   }
 })
 
-describe('OpenClaude settings path surfaces', () => {
-  test('isClaudeSettingsPath recognizes project .openclaude settings files', () => {
+describe('OmixCode settings path surfaces', () => {
+  test('isClaudeSettingsPath recognizes project .OmixCode settings files', () => {
     expect(
       isClaudeSettingsPath(
-        join(process.cwd(), '.openclaude', 'settings.json'),
+        join(process.cwd(), '.OmixCode', 'settings.json'),
       ),
     ).toBe(true)
 
     expect(
       isClaudeSettingsPath(
-        join(process.cwd(), '.openclaude', 'settings.local.json'),
+        join(process.cwd(), '.OmixCode', 'settings.local.json'),
       ),
     ).toBe(true)
   })
 
-  test('permission save destinations point user settings to ~/.openclaude', () => {
+  test('permission save destinations point user settings to ~/.OmixCode', () => {
     expect(optionForPermissionSaveDestination('userSettings')).toEqual({
       label: 'User settings',
-      description: 'Saved in ~/.openclaude/settings.json',
+      description: 'Saved in ~/.OmixCode/settings.json',
       value: 'userSettings',
     })
   })
 
-  test('permission save destinations point project settings to .openclaude', () => {
+  test('permission save destinations point project settings to .OmixCode', () => {
     expect(optionForPermissionSaveDestination('projectSettings')).toEqual({
       label: 'Project settings',
-      description: 'Checked in at .openclaude/settings.json',
+      description: 'Checked in at .OmixCode/settings.json',
       value: 'projectSettings',
     })
 
     expect(optionForPermissionSaveDestination('localSettings')).toEqual({
       label: 'Project settings (local)',
-      description: 'Saved in .openclaude/settings.local.json',
+      description: 'Saved in .OmixCode/settings.local.json',
       value: 'localSettings',
     })
   })
 
-  test('permission dialog treats ~/.openclaude as the global Claude folder', () => {
-    process.env.CLAUDE_CONFIG_DIR = join(homedir(), '.openclaude')
+  test('permission dialog treats ~/.OmixCode as the global Claude folder', () => {
+    process.env.CLAUDE_CONFIG_DIR = join(homedir(), '.OmixCode')
 
     expect(
       isInGlobalClaudeFolder(
-        join(homedir(), '.openclaude', 'settings.json'),
+        join(homedir(), '.OmixCode', 'settings.json'),
       ),
     ).toBe(true)
     expect(
@@ -71,25 +71,25 @@ describe('OpenClaude settings path surfaces', () => {
   })
 
   test('permission dialog does not treat arbitrary CLAUDE_CONFIG_DIR as the global Claude folder', () => {
-    process.env.CLAUDE_CONFIG_DIR = join(homedir(), 'custom-openclaude')
+    process.env.CLAUDE_CONFIG_DIR = join(homedir(), 'custom-OmixCode')
 
     expect(
       isInGlobalClaudeFolder(
-        join(homedir(), 'custom-openclaude', 'settings.json'),
+        join(homedir(), 'custom-OmixCode', 'settings.json'),
       ),
     ).toBe(false)
   })
 
-  test('global skill scope recognizes ~/.openclaude and legacy ~/.claude skills', () => {
-    process.env.CLAUDE_CONFIG_DIR = join(homedir(), '.openclaude')
+  test('global skill scope recognizes ~/.OmixCode and legacy ~/.claude skills', () => {
+    process.env.CLAUDE_CONFIG_DIR = join(homedir(), '.OmixCode')
 
     expect(
       getClaudeSkillScope(
-        join(homedir(), '.openclaude', 'skills', 'demo', 'SKILL.md'),
+        join(homedir(), '.OmixCode', 'skills', 'demo', 'SKILL.md'),
       ),
     ).toEqual({
       skillName: 'demo',
-      pattern: '~/.openclaude/skills/demo/**',
+      pattern: '~/.OmixCode/skills/demo/**',
     })
 
     expect(
@@ -103,17 +103,17 @@ describe('OpenClaude settings path surfaces', () => {
   })
 
   test('global skill scope does not emit fixed rules for arbitrary CLAUDE_CONFIG_DIR skills', () => {
-    process.env.CLAUDE_CONFIG_DIR = join(homedir(), 'custom-openclaude')
+    process.env.CLAUDE_CONFIG_DIR = join(homedir(), 'custom-OmixCode')
 
     expect(
       getClaudeSkillScope(
-        join(homedir(), 'custom-openclaude', 'skills', 'demo', 'SKILL.md'),
+        join(homedir(), 'custom-OmixCode', 'skills', 'demo', 'SKILL.md'),
       ),
     ).toBe(null)
   })
 })
 
-describe('OpenClaude validation tips', () => {
+describe('OmixCode validation tips', () => {
   test('permissions.defaultMode invalid value keeps suggestion but no Claude docs link', () => {
     const tip = getValidationTip({
       path: 'permissions.defaultMode',

@@ -38,9 +38,9 @@ test('returns raw truncated markdown when queryHaiku throws', async () => {
     throw new Error('MiniMax rejected the model name')
   })
 
-  const output = await runApply('Gitlawb homepage content.')
+  const output = await runApply('omixgg homepage content.')
   expect(output).toContain('[Secondary-model summarization unavailable')
-  expect(output).toContain('Gitlawb homepage content.')
+  expect(output).toContain('omixgg homepage content.')
 })
 
 test('returns raw truncated markdown when queryHaiku simulates a timeout', async () => {
@@ -60,12 +60,12 @@ test('returns raw truncated markdown when queryHaiku simulates a timeout', async
 test('returns the model response when queryHaiku succeeds', async () => {
   haikuMock.mockImplementation(async () => ({
     message: {
-      content: [{ type: 'text', text: 'This page is about GitLawb, an AI legal platform.' }],
+      content: [{ type: 'text', text: 'This page is about omixgg, an AI legal platform.' }],
     },
   }))
 
   const output = await runApply('some page content')
-  expect(output).toBe('This page is about GitLawb, an AI legal platform.')
+  expect(output).toBe('This page is about omixgg, an AI legal platform.')
 })
 
 test('returns fallback when queryHaiku resolves with empty content', async () => {

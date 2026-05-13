@@ -5,18 +5,18 @@ const { mock } = require('bun:test');
 function createStatus(overrides = {}) {
   return {
     installed: true,
-    executable: 'openclaude',
-    launchCommand: 'openclaude --project-aware',
-    terminalName: 'OpenClaude',
+    executable: 'OmixCode',
+    launchCommand: 'OmixCode --project-aware',
+    terminalName: 'OmixCode',
     shimEnabled: false,
-    workspaceFolder: '/workspace/openclaude/very/long/path/example-project',
+    workspaceFolder: '/workspace/OmixCode/very/long/path/example-project',
     workspaceSourceLabel: 'active editor workspace',
-    launchCwd: '/workspace/openclaude/very/long/path/example-project',
-    launchCwdLabel: '/workspace/openclaude/very/long/path/example-project',
+    launchCwd: '/workspace/OmixCode/very/long/path/example-project',
+    launchCwdLabel: '/workspace/OmixCode/very/long/path/example-project',
     canLaunchInWorkspaceRoot: true,
     profileStatusLabel: 'Found',
-    profileStatusHint: '/workspace/openclaude/very/long/path/example-project/.openclaude-profile.json',
-    workspaceProfilePath: '/workspace/openclaude/very/long/path/example-project/.openclaude-profile.json',
+    profileStatusHint: '/workspace/OmixCode/very/long/path/example-project/.OmixCode-profile.json',
+    workspaceProfilePath: '/workspace/OmixCode/very/long/path/example-project/.OmixCode-profile.json',
     providerState: {
       label: 'Codex',
       detail: 'gpt-5.4',
@@ -58,7 +58,7 @@ function loadExtension() {
   return require('./extension');
 }
 
-test('renderControlCenterHtml uses the OpenClaude wordmark, status rail, and warm action hierarchy', () => {
+test('renderControlCenterHtml uses the OmixCode wordmark, status rail, and warm action hierarchy', () => {
   const { renderControlCenterHtml } = loadExtension();
   const html = renderControlCenterHtml(createStatus(), { nonce: 'test-nonce', platform: 'win32' });
 
@@ -69,7 +69,7 @@ test('renderControlCenterHtml uses the OpenClaude wordmark, status rail, and war
   assert.match(html, /class="action-button secondary" id="launchRoot"/);
   assert.match(
     html,
-    /title="\/workspace\/openclaude\/very\/long\/path\/example-project"[^>]*>\/workspace\/openclaude\/very\/long\/path\/example-project<\//,
+    /title="\/workspace\/OmixCode\/very\/long\/path\/example-project"[^>]*>\/workspace\/OmixCode\/very\/long\/path\/example-project<\//,
   );
 });
 
@@ -98,9 +98,9 @@ test('renderControlCenterHtml shows explicit disabled and empty states when work
   assert.doesNotMatch(html, /id="openProfile"/);
 });
 
-test('OpenClaudeControlCenterProvider.getHtml supplies a nonce to the redesigned renderer', () => {
-  const { OpenClaudeControlCenterProvider } = loadExtension();
-  const provider = new OpenClaudeControlCenterProvider();
+test('OmixCodeControlCenterProvider.getHtml supplies a nonce to the redesigned renderer', () => {
+  const { OmixCodeControlCenterProvider } = loadExtension();
+  const provider = new OmixCodeControlCenterProvider();
 
   assert.doesNotThrow(() => provider.getHtml(createStatus()));
 
@@ -116,16 +116,16 @@ test('resolveLaunchTargets distinguishes project-aware launch from workspace-roo
 
   assert.deepEqual(
     resolveLaunchTargets({
-      activeFilePath: '/workspace/openclaude/src/panels/control-center.js',
-      workspacePath: '/workspace/openclaude',
+      activeFilePath: '/workspace/OmixCode/src/panels/control-center.js',
+      workspacePath: '/workspace/OmixCode',
       workspaceSourceLabel: 'active editor workspace',
     }),
     {
-      projectAwareCwd: '/workspace/openclaude/src/panels',
-      projectAwareCwdLabel: '/workspace/openclaude/src/panels',
+      projectAwareCwd: '/workspace/OmixCode/src/panels',
+      projectAwareCwdLabel: '/workspace/OmixCode/src/panels',
       projectAwareSourceLabel: 'active file directory',
-      workspaceRootCwd: '/workspace/openclaude',
-      workspaceRootCwdLabel: '/workspace/openclaude',
+      workspaceRootCwd: '/workspace/OmixCode',
+      workspaceRootCwdLabel: '/workspace/OmixCode',
       launchActionsShareTarget: false,
       launchActionsShareTargetReason: null,
     },
@@ -137,17 +137,17 @@ test('resolveLaunchTargets anchors relative launch commands to the workspace roo
 
   assert.deepEqual(
     resolveLaunchTargets({
-      executable: './node_modules/.bin/openclaude',
-      activeFilePath: '/workspace/openclaude/src/panels/control-center.js',
-      workspacePath: '/workspace/openclaude',
+      executable: './node_modules/.bin/OmixCode',
+      activeFilePath: '/workspace/OmixCode/src/panels/control-center.js',
+      workspacePath: '/workspace/OmixCode',
       workspaceSourceLabel: 'active editor workspace',
     }),
     {
-      projectAwareCwd: '/workspace/openclaude',
-      projectAwareCwdLabel: '/workspace/openclaude',
+      projectAwareCwd: '/workspace/OmixCode',
+      projectAwareCwdLabel: '/workspace/OmixCode',
       projectAwareSourceLabel: 'workspace root (required by relative launch command)',
-      workspaceRootCwd: '/workspace/openclaude',
-      workspaceRootCwdLabel: '/workspace/openclaude',
+      workspaceRootCwd: '/workspace/OmixCode',
+      workspaceRootCwdLabel: '/workspace/OmixCode',
       launchActionsShareTarget: true,
       launchActionsShareTargetReason: 'relative-launch-command',
     },
@@ -159,17 +159,17 @@ test('resolveLaunchTargets ignores active files outside the selected workspace',
 
   assert.deepEqual(
     resolveLaunchTargets({
-      executable: 'openclaude',
+      executable: 'OmixCode',
       activeFilePath: '/tmp/notes/scratch.js',
-      workspacePath: '/workspace/openclaude',
+      workspacePath: '/workspace/OmixCode',
       workspaceSourceLabel: 'first workspace folder',
     }),
     {
-      projectAwareCwd: '/workspace/openclaude',
-      projectAwareCwdLabel: '/workspace/openclaude',
+      projectAwareCwd: '/workspace/OmixCode',
+      projectAwareCwdLabel: '/workspace/OmixCode',
       projectAwareSourceLabel: 'first workspace folder',
-      workspaceRootCwd: '/workspace/openclaude',
-      workspaceRootCwdLabel: '/workspace/openclaude',
+      workspaceRootCwd: '/workspace/OmixCode',
+      workspaceRootCwdLabel: '/workspace/OmixCode',
       launchActionsShareTarget: true,
       launchActionsShareTargetReason: null,
     },
@@ -192,36 +192,36 @@ test('renderControlCenterHtml explains distinct launch targets when an active fi
   const { renderControlCenterHtml } = loadExtension();
   const html = renderControlCenterHtml(
     createStatus({
-      launchCwd: '/workspace/openclaude/src/panels',
-      launchCwdLabel: '/workspace/openclaude/src/panels',
+      launchCwd: '/workspace/OmixCode/src/panels',
+      launchCwdLabel: '/workspace/OmixCode/src/panels',
       launchCwdSourceLabel: 'active file directory',
-      workspaceRootCwd: '/workspace/openclaude',
-      workspaceRootCwdLabel: '/workspace/openclaude',
+      workspaceRootCwd: '/workspace/OmixCode',
+      workspaceRootCwdLabel: '/workspace/OmixCode',
     }),
     { nonce: 'test-nonce', platform: 'linux' },
   );
 
-  assert.match(html, /Starts beside the active file · \/workspace\/openclaude\/src\/panels/);
-  assert.match(html, /Always starts at the workspace root · \/workspace\/openclaude/);
+  assert.match(html, /Starts beside the active file · \/workspace\/OmixCode\/src\/panels/);
+  assert.match(html, /Always starts at the workspace root · \/workspace\/OmixCode/);
 });
 
 test('renderControlCenterHtml makes shared workspace-root launches explicit for relative commands', () => {
   const { renderControlCenterHtml } = loadExtension();
   const html = renderControlCenterHtml(
     createStatus({
-      launchCwd: '/workspace/openclaude',
-      launchCwdLabel: '/workspace/openclaude',
+      launchCwd: '/workspace/OmixCode',
+      launchCwdLabel: '/workspace/OmixCode',
       launchCwdSourceLabel: 'workspace root (required by relative launch command)',
-      workspaceRootCwd: '/workspace/openclaude',
-      workspaceRootCwdLabel: '/workspace/openclaude',
+      workspaceRootCwd: '/workspace/OmixCode',
+      workspaceRootCwdLabel: '/workspace/OmixCode',
       launchActionsShareTarget: true,
       launchActionsShareTargetReason: 'relative-launch-command',
     }),
     { nonce: 'test-nonce', platform: 'linux' },
   );
 
-  assert.match(html, /Project-aware launch is anchored to the workspace root by the relative command · \/workspace\/openclaude/);
-  assert.match(html, /Same workspace-root target as Launch OpenClaude because the relative command resolves from the workspace root · \/workspace\/openclaude/);
+  assert.match(html, /Project-aware launch is anchored to the workspace root by the relative command · \/workspace\/OmixCode/);
+  assert.match(html, /Same workspace-root target as Launch OmixCode because the relative command resolves from the workspace root · \/workspace\/OmixCode/);
 });
 
 test('renderControlCenterHtml escapes hostile text and title values', () => {

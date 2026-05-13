@@ -1,7 +1,7 @@
 {
-  "name": "openclaude-vscode",
-  "displayName": "OpenClaude",
-  "description": "Practical VS Code companion for OpenClaude with project-aware launch behavior and a real Control Center.",
+  "name": "OmixCode-vscode",
+  "displayName": "OmixCode",
+  "description": "Practical VS Code companion for OmixCode with project-aware launch behavior and a real Control Center.",
   "version": "0.2.0",
   "publisher": "devnull-bootloader",
   "engines": {
@@ -13,18 +13,18 @@
   ],
   "activationEvents": [
     "onStartupFinished",
-    "onCommand:openclaude.start",
-    "onCommand:openclaude.startInWorkspaceRoot",
-    "onCommand:openclaude.openDocs",
-    "onCommand:openclaude.openSetupDocs",
-    "onCommand:openclaude.openWorkspaceProfile",
-    "onCommand:openclaude.openControlCenter",
-    "onCommand:openclaude.newChat",
-    "onCommand:openclaude.openChat",
-    "onCommand:openclaude.resumeSession",
-    "onCommand:openclaude.abortChat",
-    "onView:openclaude.controlCenter",
-    "onView:openclaude.chat"
+    "onCommand:OmixCode.start",
+    "onCommand:OmixCode.startInWorkspaceRoot",
+    "onCommand:OmixCode.openDocs",
+    "onCommand:OmixCode.openSetupDocs",
+    "onCommand:OmixCode.openWorkspaceProfile",
+    "onCommand:OmixCode.openControlCenter",
+    "onCommand:OmixCode.newChat",
+    "onCommand:OmixCode.openChat",
+    "onCommand:OmixCode.resumeSession",
+    "onCommand:OmixCode.abortChat",
+    "onView:OmixCode.controlCenter",
+    "onView:OmixCode.chat"
   ],
   "main": "./src/extension.js",
   "files": [
@@ -39,74 +39,74 @@
   "contributes": {
     "commands": [
       {
-        "command": "openclaude.start",
-        "title": "OpenClaude: Launch in Terminal",
-        "category": "OpenClaude"
+        "command": "OmixCode.start",
+        "title": "OmixCode: Launch in Terminal",
+        "category": "OmixCode"
       },
       {
-        "command": "openclaude.startInWorkspaceRoot",
-        "title": "OpenClaude: Launch in Workspace Root",
-        "category": "OpenClaude"
+        "command": "OmixCode.startInWorkspaceRoot",
+        "title": "OmixCode: Launch in Workspace Root",
+        "category": "OmixCode"
       },
       {
-        "command": "openclaude.openDocs",
-        "title": "OpenClaude: Open Repository",
-        "category": "OpenClaude"
+        "command": "OmixCode.openDocs",
+        "title": "OmixCode: Open Repository",
+        "category": "OmixCode"
       },
       {
-        "command": "openclaude.openSetupDocs",
-        "title": "OpenClaude: Open Setup Guide",
-        "category": "OpenClaude"
+        "command": "OmixCode.openSetupDocs",
+        "title": "OmixCode: Open Setup Guide",
+        "category": "OmixCode"
       },
       {
-        "command": "openclaude.openWorkspaceProfile",
-        "title": "OpenClaude: Open Workspace Profile",
-        "category": "OpenClaude"
+        "command": "OmixCode.openWorkspaceProfile",
+        "title": "OmixCode: Open Workspace Profile",
+        "category": "OmixCode"
       },
       {
-        "command": "openclaude.openControlCenter",
-        "title": "OpenClaude: Open Control Center",
-        "category": "OpenClaude"
+        "command": "OmixCode.openControlCenter",
+        "title": "OmixCode: Open Control Center",
+        "category": "OmixCode"
       },
       {
-        "command": "openclaude.newChat",
-        "title": "OpenClaude: New Chat",
-        "category": "OpenClaude"
+        "command": "OmixCode.newChat",
+        "title": "OmixCode: New Chat",
+        "category": "OmixCode"
       },
       {
-        "command": "openclaude.openChat",
-        "title": "OpenClaude: Open Chat Panel",
-        "category": "OpenClaude"
+        "command": "OmixCode.openChat",
+        "title": "OmixCode: Open Chat Panel",
+        "category": "OmixCode"
       },
       {
-        "command": "openclaude.resumeSession",
-        "title": "OpenClaude: Resume Session",
-        "category": "OpenClaude"
+        "command": "OmixCode.resumeSession",
+        "title": "OmixCode: Resume Session",
+        "category": "OmixCode"
       },
       {
-        "command": "openclaude.abortChat",
-        "title": "OpenClaude: Abort Generation",
-        "category": "OpenClaude"
+        "command": "OmixCode.abortChat",
+        "title": "OmixCode: Abort Generation",
+        "category": "OmixCode"
       }
     ],
     "viewsContainers": {
       "activitybar": [
         {
-          "id": "openclaude",
-          "title": "OpenClaude",
-          "icon": "media/openclaude.svg"
+          "id": "OmixCode",
+          "title": "OmixCode",
+          "icon": "media/OmixCode.svg"
         }
       ]
     },
     "views": {
-      "openclaude": [
+      "OmixCode": [
         {
-          "id": "openclaude.chat",
+          "id": "OmixCode.chat",
           "name": "Chat",
           "type": "webview"
         },
         {
-          "id": "openclaude.controlCenter",
+          "id": "OmixCode.controlCenter",
           "name": "Control Center",
           "type": "webview"
         }
@@ -114,30 +114,30 @@
     },
     "keybindings": [
       {
-        "command": "openclaude.openChat",
+        "command": "OmixCode.openChat",
         "key": "ctrl+shift+l",
         "mac": "cmd+shift+l"
       }
     ],
     "configuration": {
-      "title": "OpenClaude",
+      "title": "OmixCode",
       "properties": {
-        "openclaude.launchCommand": {
+        "OmixCode.launchCommand": {
           "type": "string",
-          "default": "openclaude",
-          "description": "Command run in the integrated terminal when launching OpenClaude."
+          "default": "OmixCode",
+          "description": "Command run in the integrated terminal when launching OmixCode."
         },
-        "openclaude.terminalName": {
+        "OmixCode.terminalName": {
           "type": "string",
-          "default": "OpenClaude",
-          "description": "Integrated terminal tab name for OpenClaude sessions."
+          "default": "OmixCode",
+          "description": "Integrated terminal tab name for OmixCode sessions."
         },
-        "openclaude.useOpenAIShim": {
+        "OmixCode.useOpenAIShim": {
           "type": "boolean",
           "default": false,
-          "description": "Optionally set CLAUDE_CODE_USE_OPENAI=1 in launched OpenClaude terminals."
+          "description": "Optionally set CLAUDE_CODE_USE_OPENAI=1 in launched OmixCode terminals."
         },
-        "openclaude.permissionMode": {
+        "OmixCode.permissionMode": {
           "type": "string",
           "default": "acceptEdits",
           "enum": ["default", "acceptEdits", "bypassPermissions", "plan"],
@@ -153,9 +153,9 @@
     },
     "themes": [
       {
-        "label": "OpenClaude Terminal Black",
+        "label": "OmixCode Terminal Black",
         "uiTheme": "vs-dark",
-        "path": "./themes/OpenClaude-Terminal-Black.json"
+        "path": "./themes/OmixCode-Terminal-Black.json"
       }
     ]
   },
@@ -165,7 +165,7 @@
     "package": "npx @vscode/vsce package --no-dependencies"
   },
   "keywords": [
-    "openclaude",
+    "OmixCode",
     "terminal",
     "theme",
     "cli",
@@ -173,7 +173,7 @@
   ],
   "repository": {
     "type": "git",
-    "url": "https://github.com/Gitlawb/openclaude"
+    "url": "https://github.com/omixgg/OmixCode"
   },
   "license": "MIT"
 }

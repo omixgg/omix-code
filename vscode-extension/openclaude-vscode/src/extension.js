@@ -12,13 +12,13 @@ const {
   resolveCommandCheckPath,
 } = require('./state');
 const { buildControlCenterViewModel } = require('./presentation');
-const { ChatController, OpenClaudeChatViewProvider, OpenClaudeChatPanelManager } = require('./chat/chatProvider');
+const { ChatController, OmixCodeChatViewProvider, OmixCodeChatPanelManager } = require('./chat/chatProvider');
 const { SessionManager } = require('./chat/sessionManager');
 const { DiffContentProvider, SCHEME: DIFF_SCHEME } = require('./chat/diffController');
 
-const OPENCLAUDE_REPO_URL = 'https://github.com/Gitlawb/openclaude';
-const OPENCLAUDE_SETUP_URL = 'https://github.com/Gitlawb/openclaude/blob/main/README.md#quick-start';
-const PROFILE_FILE_NAME = '.openclaude-profile.json';
+const OmixCode_REPO_URL = 'https://github.com/omixgg/OmixCode';
+const OmixCode_SETUP_URL = 'https://github.com/omixgg/OmixCode/blob/main/README.md#quick-start';
+const PROFILE_FILE_NAME = '.OmixCode-profile.json';
 
 function escapeHtml(value) {
   return String(value)
@@ -204,9 +204,9 @@ function readWorkspaceProfile(profilePath) {
 }
 
 async function collectControlCenterState() {
-  const configured = vscode.workspace.getConfiguration('openclaude');
-  const launchCommand = configured.get('launchCommand', 'openclaude');
-  const terminalName = configured.get('terminalName', 'OpenClaude');
+  const configured = vscode.workspace.getConfiguration('OmixCode');
+  const launchCommand = configured.get('launchCommand', 'OmixCode');
+  const terminalName = configured.get('terminalName', 'OmixCode');
   const shimEnabled = configured.get('useOpenAIShim', false);
   const executable = getExecutableFromCommand(launchCommand);
   const launchWorkspace = resolveLaunchWorkspace();
@@ -262,11 +262,11 @@ async function collectControlCenterState() {
   };
 }
 
-async function launchOpenClaude(options = {}) {
+async function launchOmixCode(options = {}) {
   const { requireWorkspace = false } = options;
-  const configured = vscode.workspace.getConfiguration('openclaude');
-  const launchCommand = configured.get('launchCommand', 'openclaude');
-  const terminalName = configured.get('terminalName', 'OpenClaude');
+  const configured = vscode.workspace.getConfiguration('OmixCode');
+  const launchCommand = configured.get('launchCommand', 'OmixCode');
+  const terminalName = configured.get('terminalName', 'OmixCode');
   const shimEnabled = configured.get('useOpenAIShim', false);
   const executable = getExecutableFromCommand(launchCommand);
   const launchWorkspace = resolveLaunchWorkspace();
@@ -291,15 +291,15 @@ async function launchOpenClaude(options = {}) {
 
   if (!installed) {
     const action = await vscode.window.showErrorMessage(
-      `OpenClaude command not found: ${executable}. Install it with: npm install -g @gitlawb/openclaude`,
+      `OmixCode command not found: ${executable}. Install it with: npm install -g @omixgg/OmixCode`,
       'Open Setup Guide',
       'Open Repository',
     );
 
     if (action === 'Open Setup Guide') {
-      await vscode.env.openExternal(vscode.Uri.parse(OPENCLAUDE_SETUP_URL));
+      await vscode.env.openExternal(vscode.Uri.parse(OmixCode_SETUP_URL));
     } else if (action === 'Open Repository') {
-      await vscode.env.openExternal(vscode.Uri.parse(OPENCLAUDE_REPO_URL));
+      await vscode.env.openExternal(vscode.Uri.parse(OmixCode_REPO_URL));
     }
 
     return;
@@ -423,7 +423,7 @@ function getWorkspaceRootActionDetail(status, fallbackDetail) {
   }
 
   if (status.launchActionsShareTargetReason === 'relative-launch-command') {
-    return `Same workspace-root target as Launch OpenClaude because the relative command resolves from the workspace root · ${status.workspaceRootCwdLabel}`;
+    return `Same workspace-root target as Launch OmixCode because the relative command resolves from the workspace root · ${status.workspaceRootCwdLabel}`;
   }
 
   return `Always starts at the workspace root · ${status.workspaceRootCwdLabel}`;
@@ -841,7 +841,7 @@ function renderControlCenterHtml(status, options = {}) {
         <div class="hero-top">
           <div class="brand">
             <div class="eyebrow">${escapeHtml(viewModel.header.eyebrow)}</div>
-            <div class="wordmark" aria-label="OpenClaude wordmark">Open<span class="wordmark-accent">Claude</span></div>
+            <div class="wordmark" aria-label="OmixCode wordmark">Open<span class="wordmark-accent">Claude</span></div>
             <div class="headline">
               <h1 class="headline-title" id="control-center-title">${escapeHtml(viewModel.header.title)}</h1>
               <p class="headline-subtitle">${escapeHtml(viewModel.header.subtitle)}</p>
@@ -881,11 +881,11 @@ function renderControlCenterHtml(status, options = {}) {
             </button>
             <button class="support-link" id="repo" type="button">
               <span class="support-link-label">Open Repository</span>
-              <span class="summary-detail">Browse the upstream OpenClaude project.</span>
+              <span class="summary-detail">Browse the upstream OmixCode project.</span>
             </button>
             <button class="support-link" id="commands" type="button">
               <span class="support-link-label">Open Command Palette</span>
-              <span class="summary-detail">Access VS Code and OpenClaude commands quickly.</span>
+              <span class="summary-detail">Access VS Code and OmixCode commands quickly.</span>
             </button>
           </div>
         </section>
@@ -915,7 +915,7 @@ function renderControlCenterHtml(status, options = {}) {
 </html>`;
 }
 
-class OpenClaudeControlCenterProvider {
+class OmixCodeControlCenterProvider {
   constructor() {
     this.webviewView = null;
   }
@@ -933,19 +933,19 @@ class OpenClaudeControlCenterProvider {
     webviewView.webview.onDidReceiveMessage(async message => {
       switch (message?.type) {
         case 'launch':
-          await launchOpenClaude();
+          await launchOmixCode();
           break;
         case 'launchRoot':
-          await launchOpenClaude({ requireWorkspace: true });
+          await launchOmixCode({ requireWorkspace: true });
           break;
         case 'openProfile':
           await openWorkspaceProfile();
           break;
         case 'repo':
-          await vscode.env.openExternal(vscode.Uri.parse(OPENCLAUDE_REPO_URL));
+          await vscode.env.openExternal(vscode.Uri.parse(OmixCode_REPO_URL));
           break;
         case 'setup':
-          await vscode.env.openExternal(vscode.Uri.parse(OPENCLAUDE_SETUP_URL));
+          await vscode.env.openExternal(vscode.Uri.parse(OmixCode_SETUP_URL));
           break;
         case 'commands':
           await vscode.commands.executeCommand('workbench.action.showCommands');
@@ -1045,7 +1045,7 @@ class OpenClaudeControlCenterProvider {
  */
 function activate(context) {
   // ── Control Center (existing) ──
-  const provider = new OpenClaudeControlCenterProvider();
+  const provider = new OmixCodeControlCenterProvider();
   const refreshProvider = () => {
     void provider.refresh();
   };
@@ -1058,8 +1058,8 @@ function activate(context) {
   }
 
   const chatController = new ChatController(sessionManager);
-  const chatViewProvider = new OpenClaudeChatViewProvider(chatController);
-  const chatPanelManager = new OpenClaudeChatPanelManager(chatController);
+  const chatViewProvider = new OmixCodeChatViewProvider(chatController);
+  const chatPanelManager = new OmixCodeChatPanelManager(chatController);
 
   // ── Diff content provider ──
   const diffProvider = new DiffContentProvider();
@@ -1073,73 +1073,73 @@ function activate(context) {
     vscode.StatusBarAlignment.Right,
     100,
   );
-  statusBarItem.text = '$(comment-discussion) OpenClaude';
-  statusBarItem.tooltip = 'Open OpenClaude Chat';
-  statusBarItem.command = 'openclaude.openChat';
+  statusBarItem.text = '$(comment-discussion) OmixCode';
+  statusBarItem.tooltip = 'Open OmixCode Chat';
+  statusBarItem.command = 'OmixCode.openChat';
   statusBarItem.show();
 
   chatController.onDidChangeState((state) => {
     switch (state) {
       case 'streaming':
-        statusBarItem.text = '$(sync~spin) OpenClaude';
-        statusBarItem.tooltip = 'OpenClaude is generating...';
+        statusBarItem.text = '$(sync~spin) OmixCode';
+        statusBarItem.tooltip = 'OmixCode is generating...';
         break;
       case 'connected':
-        statusBarItem.text = '$(comment-discussion) OpenClaude';
-        statusBarItem.tooltip = 'OpenClaude connected';
+        statusBarItem.text = '$(comment-discussion) OmixCode';
+        statusBarItem.tooltip = 'OmixCode connected';
         break;
       default:
-        statusBarItem.text = '$(comment-discussion) OpenClaude';
-        statusBarItem.tooltip = 'Open OpenClaude Chat';
+        statusBarItem.text = '$(comment-discussion) OmixCode';
+        statusBarItem.tooltip = 'Open OmixCode Chat';
         break;
     }
   });
 
   // ── Existing commands ──
-  const startCommand = vscode.commands.registerCommand('openclaude.start', async () => {
-    await launchOpenClaude();
+  const startCommand = vscode.commands.registerCommand('OmixCode.start', async () => {
+    await launchOmixCode();
   });
 
   const startInWorkspaceRootCommand = vscode.commands.registerCommand(
-    'openclaude.startInWorkspaceRoot',
+    'OmixCode.startInWorkspaceRoot',
     async () => {
-      await launchOpenClaude({ requireWorkspace: true });
+      await launchOmixCode({ requireWorkspace: true });
     },
   );
 
-  const openDocsCommand = vscode.commands.registerCommand('openclaude.openDocs', async () => {
-    await vscode.env.openExternal(vscode.Uri.parse(OPENCLAUDE_REPO_URL));
+  const openDocsCommand = vscode.commands.registerCommand('OmixCode.openDocs', async () => {
+    await vscode.env.openExternal(vscode.Uri.parse(OmixCode_REPO_URL));
   });
 
   const openSetupDocsCommand = vscode.commands.registerCommand(
-    'openclaude.openSetupDocs',
+    'OmixCode.openSetupDocs',
     async () => {
-      await vscode.env.openExternal(vscode.Uri.parse(OPENCLAUDE_SETUP_URL));
+      await vscode.env.openExternal(vscode.Uri.parse(OmixCode_SETUP_URL));
     },
   );
 
   const openWorkspaceProfileCommand = vscode.commands.registerCommand(
-    'openclaude.openWorkspaceProfile',
+    'OmixCode.openWorkspaceProfile',
     async () => {
       await openWorkspaceProfile();
     },
   );
 
-  const openUiCommand = vscode.commands.registerCommand('openclaude.openControlCenter', async () => {
-    await vscode.commands.executeCommand('workbench.view.extension.openclaude');
+  const openUiCommand = vscode.commands.registerCommand('OmixCode.openControlCenter', async () => {
+    await vscode.commands.executeCommand('workbench.view.extension.OmixCode');
   });
 
   // ── New chat commands ──
-  const newChatCommand = vscode.commands.registerCommand('openclaude.newChat', () => {
+  const newChatCommand = vscode.commands.registerCommand('OmixCode.newChat', () => {
     chatController.stopSession();
     chatController.broadcast({ type: 'session_cleared' });
   });
 
-  const openChatCommand = vscode.commands.registerCommand('openclaude.openChat', () => {
+  const openChatCommand = vscode.commands.registerCommand('OmixCode.openChat', () => {
     chatPanelManager.openPanel();
   });
 
-  const resumeSessionCommand = vscode.commands.registerCommand('openclaude.resumeSession', async () => {
+  const resumeSessionCommand = vscode.commands.registerCommand('OmixCode.resumeSession', async () => {
     const sessions = await sessionManager.listSessions();
     if (sessions.length === 0) {
       await vscode.window.showInformationMessage('No sessions found to resume.');
@@ -1161,18 +1161,18 @@ function activate(context) {
     }
   });
 
-  const abortChatCommand = vscode.commands.registerCommand('openclaude.abortChat', () => {
+  const abortChatCommand = vscode.commands.registerCommand('OmixCode.abortChat', () => {
     chatController.abort();
   });
 
   // ── Register providers ──
   const controlCenterProviderReg = vscode.window.registerWebviewViewProvider(
-    'openclaude.controlCenter',
+    'OmixCode.controlCenter',
     provider,
   );
 
   const chatViewProviderReg = vscode.window.registerWebviewViewProvider(
-    'openclaude.chat',
+    'OmixCode.chat',
     chatViewProvider,
     { webviewOptions: { retainContextWhenHidden: true } },
   );
@@ -1199,7 +1199,7 @@ function activate(context) {
     // watchers
     profileWatcher,
     vscode.workspace.onDidChangeConfiguration(event => {
-      if (event.affectsConfiguration('openclaude')) {
+      if (event.affectsConfiguration('OmixCode')) {
         refreshProvider();
       }
     }),
@@ -1226,10 +1226,10 @@ function deactivate() {}
 module.exports = {
   activate,
   deactivate,
-  OpenClaudeControlCenterProvider,
+  OmixCodeControlCenterProvider,
   renderControlCenterHtml,
   resolveLaunchTargets,
   ChatController,
-  OpenClaudeChatViewProvider,
-  OpenClaudeChatPanelManager,
+  OmixCodeChatViewProvider,
+  OmixCodeChatPanelManager,
 };

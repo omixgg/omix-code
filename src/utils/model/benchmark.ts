@@ -1,5 +1,5 @@
 /**
- * Model Benchmarking for OpenClaude
+ * Model Benchmarking for OmixCode
  * 
  * Tests and compares model speed/quality for informed model selection.
  * Supports OpenAI-compatible, Ollama, Anthropic, Bedrock, Vertex.

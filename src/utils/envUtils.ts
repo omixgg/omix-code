@@ -114,7 +114,7 @@ export function migrateLegacyClaudeConfigHome(options?: {
   }
 
   const homeDir = options?.homeDir ?? homedir()
-  const openClaudeDir = join(homeDir, '.openclaude')
+  const OmixCodeDir = join(homeDir, '.OmixCode')
   const legacyClaudeDir = join(homeDir, '.claude')
 
   try {
@@ -126,14 +126,14 @@ export function migrateLegacyClaudeConfigHome(options?: {
     }
 
     if (legacyDirExists) {
-      copyMissingPathSync(legacyClaudeDir, openClaudeDir)
+      copyMissingPathSync(legacyClaudeDir, OmixCodeDir)
     }
 
     for (const legacyFile of legacyGlobalConfigFiles) {
-      const openClaudeFile = legacyFile.replace(/^\.claude/, '.openclaude')
+      const OmixCodeFile = legacyFile.replace(/^\.claude/, '.OmixCode')
       copyMissingPathSync(
         join(homeDir, legacyFile),
-        join(homeDir, openClaudeFile),
+        join(homeDir, OmixCodeFile),
       )
     }
     return true
@@ -151,9 +151,9 @@ export function resolveClaudeConfigHomeDir(options?: {
   }
 
   const homeDir = options?.homeDir ?? homedir()
-  const openClaudeDir = join(homeDir, '.openclaude')
+  const OmixCodeDir = join(homeDir, '.OmixCode')
 
-  return openClaudeDir.normalize('NFC')
+  return OmixCodeDir.normalize('NFC')
 }
 
 // Memoized: 150+ callers, many on hot paths. Keyed off CLAUDE_CONFIG_DIR so
@@ -166,13 +166,13 @@ export const getClaudeConfigHomeDir = memoize(
       configDirEnv,
       homeDir,
     })
-    const openClaudeDir = join(homeDir, '.openclaude')
+    const OmixCodeDir = join(homeDir, '.OmixCode')
     const legacyClaudeDir = join(homeDir, '.claude')
 
     if (
       !configDirEnv &&
       !migrationSucceeded &&
-      !pathIsDirectory(openClaudeDir) &&
+      !pathIsDirectory(OmixCodeDir) &&
       pathExists(legacyClaudeDir)
     ) {
       return legacyClaudeDir.normalize('NFC')
